@@ -1,0 +1,41 @@
+semaphore Medico = 0;
+semaphore Paciente = 1;
+semaphore Sintomas = 0;
+semaphore Tratamiento = 0;
+
+void paciente (int ID){
+	 
+	wait(Paciente);
+		cout<< "Llega el paciente "<<ID<< " a la consulta medica."<<'\n';
+	signal(Medico);
+
+	wait(Sintomas);
+		cout<< "Paciente "<<ID<< " da sintomas."<<'\n';
+	signal(Tratamiento);
+	
+	
+}
+void medico (int ID){
+	int j;
+	while (j<5){
+		
+		wait (Medico);
+		cout<<"Medico "<<ID<<" pregunta sintomas"<<'\n';
+		signal(Sintomas);
+		
+		wait (Tratamiento);
+		cout<<"Medico "<<ID<<" da tratamiento."<<'\n';
+		cout<<endl;
+		signal(Paciente);
+
+		j++;
+	}
+}
+
+void main(){
+	cobegin{
+	paciente(1);paciente(2);paciente(3);paciente(4);paciente(5);
+	medico(10);
+
+		}
+}
